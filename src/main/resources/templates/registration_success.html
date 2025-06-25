@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Successful</title>
+</head>
+<body>
+    <div>
+        <h1>Registration Successful</h1>
+        <p>Thank you for registering, <span th:text="${patient.firstname}">First Name</span>!</p>
+        <p>Your registration details are as follows:</p>
+        <ul>
+            <li>First Name: <span th:text="${patient.firstname}">First Name</span></li>
+            <li>Last Name: <span th:text="${patient.lastname}">Last Name</span></li>
+            <li>Email: <span th:text="${patient.email}">Email</span></li>
+            <li>Phone: <span th:text="${patient.phoneNumber}">Phone Number</span></li>
+            <li>Date of Birth:
+                <span th:if="${patient.dateOfBirth != null}" th:text="${#dates.format(patient.dateOfBirth, 'yyyy-MM-dd')}">Date of Birth</span>
+                <span th:if="${patient.dateOfBirth == null}">N/A</span>
+            </li>
+            <li>Address: <span th:text="${patient.address}">Address</span></li>
+            
+        </ul>
+        <p>You can now log in with your credentials.</p>
+        <a href="/login">Go to Login</a>
+    </div>
+</body>
+</html>

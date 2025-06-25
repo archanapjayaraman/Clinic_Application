@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login Successful</title>
+        <meta charset="UTF-8">
+        </head>
+        <body>
+        <h1>Login Successful</h1>
+        <p>Welcome back, <span th:text="${patient.firstname}">First Name</span>!</p>
+        <p>You have successfully logged in.</p>
+        <p>Your details are as follows:</p>
+        <ul>
+            <li>First Name: <span th:text="${patient.firstname}">First Name</span></li>
+            <li>Last Name: <span th:text="${patient.lastname}">Last Name</span></li>
+            <li>Email: <span th:text="${patient.email}">Email</span></li>
+            <li>Phone: <span th:text="${patient.phoneNumber}">Phone Number</span></li>
+            <li>Date of Birth:
+                <span th:if="${patient.dateOfBirth != null}" th:text="${#dates.format(patient.dateOfBirth, 'yyyy-MM-dd')}">Date of Birth</span>
+                <span th:if="${patient.dateOfBirth == null}">N/A</span>
+            </li>
+            <li>Address: <span th:text="${patient.address}">Address</span></li>
+        </ul>
+        </body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Success</title>
+        <meta charset="UTF-8">
+        <body>
+            <h1>Registration Successful</h1>
+            <p>Thank you for registering. Your details have been successfully saved.</p>
+            <p>First Name: <span th:text="${patient.firstName}"></span></p>
+            <p>Last Name: <span th:text="${patient.lastName}"></span></p>
+            <p>Email: <span th:text="${patient.email}"></span></p>
+            <p>Phone: <span th:text="${patient.phone}"></span></p>
+            <p>Date of Birth: <span th:text="${#dates.format(patient.dateOfBirth, 'dd/MM/yyyy')}"></span></p>
+            <p>Address: <span th:text="${patient.address}"></span></p>
+            <p><strong>Note:</strong> If you need to make any changes, please contact our support team.</p>
+        </body>     
+            <a href="/home">Go to Home</a>
+    </head>
+</html>
