@@ -16,6 +16,7 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -26,9 +27,11 @@ public class WebConfig implements WebMvcConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Configure your security filter chain here
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/register", "/login", "/patients").permitAll()
+                .requestMatchers("/register", "/login").permitAll()
                 .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll())
                 .logout(Customizer.withDefaults());
         return http.build(); // Replace with actual security configuration
     }
@@ -37,6 +40,11 @@ public class WebConfig implements WebMvcConfigurer {
     public JdbcUserDetailsManager userDetailsService(DataSource dataSource) {
         // Define your user details service here
         return new JdbcUserDetailsManager(dataSource);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
     }
 }
 // @Override

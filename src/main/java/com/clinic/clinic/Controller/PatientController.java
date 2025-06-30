@@ -1,5 +1,7 @@
 package com.clinic.clinic.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,12 @@ public class PatientController {
         return "patients";
     }
 
+    // to get all the patients
+    @GetMapping("/patients")
+    public List<Patient> getAllUsers() {
+        return patientService.findAllPatients();
+    }
+
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("patient", new Patient());
@@ -32,19 +40,31 @@ public class PatientController {
 
     @PostMapping("/register")
     public String registerPatient(@ModelAttribute("patient") Patient patient, Model model) {
-        System.out.println(patient);
-        patientService.savePatient(patient);
-        // check patient exist
-        Patient registeredPatient = patientService.findPatientById(patient.getId());
-        if (registeredPatient != null) {
-            System.out.println("Patient registered successfully: " + registeredPatient);
-            model.addAttribute("message", "Patient registered successfully!");
-        } else {
-            model.addAttribute("message", "Registration failed. Please try again.");
+        // Check if user already exists by email
+        if (patientService.isUserRegistered(patient.getEmail())) {
+            model.addAttribute("message", "User already registered with this email.");
+            return "PatientRegistration";
         }
-        patient = patientService.findPatientById(patient.getId());
-        System.out.println("Date of Birth: " + patient.getDateOfBirth());
+
+        // Save user for authentication and as patient
+        patientService.registerPatient(patient);
+
+        model.addAttribute("message", "Patient registered successfully!");
+        return "redirect:/login?registered";
+    }
+
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        model.addAttribute("patient", new Patient());
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String loginPatient(@ModelAttribute("patient") Patient patient, Model model) {
+        System.out.println(patient);
+        model.addAttribute("message", "Hello!");
         return "redirect:/patient/" + patient.getId();
+
     }
 
     @GetMapping("/patient/{id}")
@@ -52,19 +72,6 @@ public class PatientController {
         Patient patient = patientService.findPatientById(id);
         model.addAttribute("patient", patient);
         model.addAttribute("message", "Patient details retrieved successfully!");
-        return "registration_success";
-    }
-
-    @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        model.addAttribute("patient", new Patient());
-        return "PatientLogin";
-    }
-
-    @PostMapping("/patientlogin")
-    public String loginPatient(@ModelAttribute("patient") Patient patient, Model model) {
-        System.out.println(patient);
-        model.addAttribute("message", "Hello!");
         return "login_success";
     }
 

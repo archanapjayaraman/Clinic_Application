@@ -3,6 +3,8 @@ package com.clinic.clinic.patient;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class Patient {
 
     private String firstname;
     private String lastname;
+    @Column(unique = true)
     private String email;
     private String phoneNumber;
     @DateTimeFormat(pattern = "yyyy-MM-dd")

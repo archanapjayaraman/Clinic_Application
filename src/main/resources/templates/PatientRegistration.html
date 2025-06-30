@@ -31,6 +31,7 @@
         <label for="confirmPassword">Confirm Password:</label>
         <input type="password" id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}" required/>
         
+        <label th.if="${message != null}" th:text="${message}" style="color: red;"></label>
 
         <button type="submit">Register</button>
     </form>
